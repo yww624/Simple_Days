@@ -1,3 +1,3 @@
 - 使用vscode来写latex
 - latex遇过的坑
-- 
+- 常用的数学表达式写法
