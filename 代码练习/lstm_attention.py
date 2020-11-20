@@ -49,7 +49,7 @@ class AttnDecoderRNN(nn.Module):
 
         self.dropout = nn.Dropout(self.dropout_p)
 
-        self.gru = nn.GRU(self.hidden_size, self.hidden_size)
+        self.lstm = nn.LSTM(self.hidden_size, self.hidden_size)
 
         self.out = nn.Linear(self.hidden_size, self.output_size)
 
@@ -78,12 +78,18 @@ class AttnDecoderRNN(nn.Module):
         return torch.zeros(1, 1, self.hidden_size, device=device)                
 
 if __name__ == '__main__':
+    hidden_size = 1024
     ipt = torch.rand(1, 355, 161)
 
     print(ipt.device)
     # opt = LSTMModel()(ipt)
     
-    encoder1 = EncoderRNN()(ipt)
-    attn_decoder1 = AttnDecoderRNN(hidden_size, 161, dropout_p=0.1)
-    print(attn_decoder1.shape)
+    encoder1 = EncoderRNN()
+    decoder = AttnDecoderRNN(hidden_size, 161, dropout_p=0.1)
+    o , h = encoder1(ipt)
+
+    a,b,c = decoder(ipt,h,o)
+    print(a)
+    print(b)
+    print(c)
     # print(opt.shape)
